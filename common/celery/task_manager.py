@@ -368,11 +368,14 @@ class TaskManager:
             
             # 获取当前活跃任务
             active_tasks = self.get_active_tasks()
-            stats.running_tasks += len(active_tasks)
+            active_task_count = len(active_tasks)
             
             # 获取计划任务
             scheduled_tasks = self.get_scheduled_tasks()
             stats.pending_tasks += len(scheduled_tasks)
+            
+            # 将活跃任务单独统计
+            stats.active_tasks = active_task_count
             
         except Exception as e:
             logger.error(f"获取任务统计失败: {str(e)}")
