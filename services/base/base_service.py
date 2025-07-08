@@ -301,8 +301,9 @@ class BaseService:
             repository: 数据访问层实例
         """
         self._repositories[repository_name] = repository
-        # 异步初始化repository
-        asyncio.create_task(self._initialize_repository(repository))
+        # 异步初始化repository并跟踪任务
+        initialization_task = asyncio.create_task(self._initialize_repository(repository))
+        self._repository_tasks[repository_name] = initialization_task
         self.logger.info("数据访问层注册成功", 
                         service_name=self.service_name,
                         repository_name=repository_name)
