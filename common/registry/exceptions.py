@@ -260,7 +260,10 @@ def handle_registry_exception(func):
     自动捕获并转换异常为注册中心异常类型
     """
     import functools
-    from loguru import logger
+    try:
+        from loguru import logger
+    except ImportError:
+        from ..logger.mock_logger import logger
     
     @functools.wraps(func)
     def wrapper(*args, **kwargs):
@@ -288,7 +291,10 @@ def handle_async_registry_exception(func):
     """
     import functools
     import asyncio
-    from loguru import logger
+    try:
+        from loguru import logger
+    except ImportError:
+        from ..logger.mock_logger import logger
     
     @functools.wraps(func)
     async def wrapper(*args, **kwargs):

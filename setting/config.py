@@ -368,3 +368,26 @@ def load_config(config_class: Type[T], config_file: Optional[str] = None) -> T:
     if config_file:
         config.load(config_file)
     return config
+
+
+# 注册中心配置示例
+REGISTRY_CONFIG = {
+    "type": "etcd",  # 或 "consul"
+    "etcd": {
+        "endpoints": ["http://localhost:2379"],
+        "timeout": 5,
+        "username": None,
+        "password": None
+    },
+    "consul": {
+        "host": "localhost",
+        "port": 8500,
+        "token": None,
+        "scheme": "http"
+    },
+    "service": {
+        "ttl": 10,  # 服务TTL
+        "health_check_interval": 5,  # 健康检查间隔
+        "deregister_critical_after": "30s"  # 严重故障后注销时间
+    }
+}

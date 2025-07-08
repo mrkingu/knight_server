@@ -9,7 +9,10 @@ import asyncio
 import time
 from typing import Dict, List, Optional, Any, Callable, Set
 from dataclasses import dataclass, field
-from loguru import logger
+try:
+    from loguru import logger
+except ImportError:
+    from ..logger.mock_logger import logger
 
 from ..utils.singleton import async_singleton
 from .base_adapter import BaseRegistryAdapter, ServiceInfo, ServiceStatus, WatchEvent

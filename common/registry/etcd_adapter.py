@@ -10,7 +10,10 @@ import json
 import time
 from typing import List, Dict, Optional, Any, AsyncIterator, Callable
 from dataclasses import asdict
-from loguru import logger
+try:
+    from loguru import logger
+except ImportError:
+    from ..logger.mock_logger import logger
 
 try:
     import aioetcd3 as etcd3

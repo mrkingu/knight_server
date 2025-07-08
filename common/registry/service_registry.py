@@ -11,9 +11,29 @@ import socket
 import threading
 from typing import Dict, List, Optional, Any, Set
 from dataclasses import dataclass
-from loguru import logger
+try:
+    from loguru import logger
+except ImportError:
+    from ..logger.mock_logger import logger
 
-from ..utils.id_generator import generate_unique_id
+try:
+    from ..utils.id_generator import generate_unique_id
+except ImportError:
+    # 简单的 ID 生成器备用实现
+    import uuid
+    import time
+    import socket
+    
+    def generate_unique_id(prefix: str = "") -> str:
+        """生成唯一ID的简单实现"""
+        timestamp = int(time.time() * 1000)
+        hostname = socket.gethostname()[:8]
+        unique_part = str(uuid.uuid4())[:8]
+        
+        if prefix:
+            return f"{prefix}-{hostname}-{timestamp}-{unique_part}"
+        else:
+            return f"{hostname}-{timestamp}-{unique_part}"
 from ..utils.singleton import async_singleton
 from .base_adapter import BaseRegistryAdapter, ServiceInfo, ServiceStatus
 from .exceptions import (
