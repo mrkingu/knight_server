@@ -195,10 +195,17 @@ class TableManager:
             # 重新加载文件
             result = self._loader.load_config_file(file_path)
             
-            if result.success:
-                # 这里需要从加载器获取实际的配置数据
-                # 由于load_config_file返回的是LoadResult，我们需要实际的配置数据
-                # 这里先简化处理
+            if result.success and result.data:
+                # 提取配置类和配置数据
+                config_class = result.metadata.config_class
+                config_data = result.data
+                
+                # 更新内存中的配置数据
+                if config_class not in self._config_data:
+                    self._config_data[config_class] = {}
+                
+                self._config_data[config_class].update(config_data)
+                
                 logger.info(f"重新加载配置文件: {file_path}")
             else:
                 logger.error(f"重新加载配置文件失败: {file_path}")
