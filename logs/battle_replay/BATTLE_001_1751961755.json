@@ -1,19 +1,19 @@
 {
   "version": "1.0",
-  "battle_id": "BATTLE_001",
+  "battle_id": "BATTLE001",
   "start_time": 1751961755.5777073,
   "end_time": 1751961755.5780199,
   "event_count": 11,
   "events": [
     {
       "event_id": "bfd5a71b-ea64-447a-8283-b499555de032",
-      "battle_id": "BATTLE_001",
+      "battle_id": "BATTLE001",
       "event_type": "battle_start",
       "timestamp": 1751961755.5777073
     },
     {
       "event_id": "b486f4c6-c3b9-444c-9fe1-27bab7168616",
-      "battle_id": "BATTLE_001",
+      "battle_id": "BATTLE001",
       "event_type": "player_join",
       "timestamp": 1751961755.5777898,
       "player_id": "player_001",
