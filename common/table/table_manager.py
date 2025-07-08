@@ -11,7 +11,7 @@ from typing import Dict, Any, List, Type, TypeVar, Optional, Union, Generic
 from dataclasses import dataclass
 from pathlib import Path
 
-from loguru import logger
+from common.logger import logger
 
 from .types import (
     BaseConfig, ConfigId, CacheConfig, LoaderConfig, HotReloadConfig,

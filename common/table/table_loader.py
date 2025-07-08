@@ -11,8 +11,7 @@ from typing import Dict, Any, List, Type, Optional, Union
 from pathlib import Path
 from dataclasses import dataclass
 
-from loguru import logger
-from common.utils.json_utils import JSONSchema
+from common.logger import logger
 
 from .types import BaseConfig, LoaderConfig, ConfigMetadata, ConfigType, ConfigRegistry, ConfigId
 from .exceptions import ConfigLoadError, ConfigValidationError, ConfigTypeError, SchemaValidationError
@@ -25,6 +24,48 @@ class LoadResult:
     config_count: int
     errors: List[str]
     metadata: Optional[ConfigMetadata] = None
+
+
+class SimpleJSONValidator:
+    """简单的JSON验证器"""
+    
+    @staticmethod
+    def validate_structure(data: Any, schema: Dict[str, Any]) -> bool:
+        """
+        简单的结构验证
+        
+        Args:
+            data: 要验证的数据
+            schema: 模式定义
+            
+        Returns:
+            bool: 是否符合模式
+        """
+        if not isinstance(data, dict):
+            return False
+        
+        required = schema.get('required', [])
+        properties = schema.get('properties', {})
+        
+        # 检查必需字段
+        for field in required:
+            if field not in data:
+                return False
+        
+        # 简单的类型检查
+        for field, field_schema in properties.items():
+            if field in data:
+                expected_type = field_schema.get('type')
+                value = data[field]
+                
+                if expected_type == 'string' and not isinstance(value, str):
+                    return False
+                elif expected_type == 'number' and not isinstance(value, (int, float)):
+                    return False
+                elif expected_type == 'boolean' and not isinstance(value, bool):
+                    return False
+        
+        return True
 
 
 class ConfigLoader:
@@ -249,10 +290,10 @@ class ConfigLoader:
         # 验证数据结构
         if isinstance(data, list):
             for i, item in enumerate(data):
-                if not JSONSchema.validate_structure(item, schema):
+                if not SimpleJSONValidator.validate_structure(item, schema):
                     errors.append(f"第{i+1}项数据验证失败")
         else:
-            if not JSONSchema.validate_structure(data, schema):
+            if not SimpleJSONValidator.validate_structure(data, schema):
                 errors.append("数据结构验证失败")
         
         if errors:

@@ -14,7 +14,7 @@ from dataclasses import dataclass
 from enum import Enum
 import fnmatch
 
-from loguru import logger
+from common.logger import logger
 
 from .types import HotReloadConfig, ConfigMetadata
 from .exceptions import HotReloadError
@@ -26,6 +26,16 @@ try:
 except ImportError:
     WATCHDOG_AVAILABLE = False
     logger.warning("watchdog未安装，热更新功能将使用轮询模式")
+    
+    # 创建模拟类以避免导入错误
+    class FileSystemEventHandler:
+        pass
+    
+    class FileSystemEvent:
+        pass
+    
+    class Observer:
+        pass
 
 
 class ReloadEventType(Enum):

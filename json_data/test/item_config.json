@@ -1,0 +1,32 @@
+[
+    {
+        "id": 1001,
+        "name": "铁剑",
+        "type": 1,
+        "quality": 1,
+        "level": 1,
+        "price": 100,
+        "stack_limit": 1,
+        "description": "一把普通的铁剑"
+    },
+    {
+        "id": 1002,
+        "name": "银剑",
+        "type": 1,
+        "quality": 2,
+        "level": 5,
+        "price": 500,
+        "stack_limit": 1,
+        "description": "锋利的银剑"
+    },
+    {
+        "id": 2001,
+        "name": "生命药水",
+        "type": 2,
+        "quality": 1,
+        "level": 1,
+        "price": 50,
+        "stack_limit": 10,
+        "description": "恢复少量生命值"
+    }
+]

@@ -11,7 +11,7 @@ from collections import OrderedDict
 from dataclasses import dataclass, field
 from abc import ABC, abstractmethod
 
-from .types import BaseConfig, CacheConfig, CacheStrategy, ConfigId
+from .types import BaseConfig, CacheConfig, CacheStrategy as CacheStrategyEnum, ConfigId
 from .exceptions import CacheError
 
 T = TypeVar('T', bound=BaseConfig)
@@ -337,10 +337,10 @@ class ConfigCache(Generic[T]):
     def _create_cache_strategy(self) -> CacheStrategy:
         """创建缓存策略"""
         strategy_map = {
-            CacheStrategy.LRU: LRUCache,
-            CacheStrategy.LFU: LFUCache,
-            CacheStrategy.FIFO: FIFOCache,
-            CacheStrategy.NO_CACHE: NoCache,
+            CacheStrategyEnum.LRU: LRUCache,
+            CacheStrategyEnum.LFU: LFUCache,
+            CacheStrategyEnum.FIFO: FIFOCache,
+            CacheStrategyEnum.NO_CACHE: NoCache,
         }
         
         strategy_class = strategy_map.get(self.config.strategy)
