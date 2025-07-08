@@ -1,0 +1,87 @@
+# Web框架
+sanic==23.12.1
+sanic-ext==23.12.0
+uvloop==0.19.0
+
+# 协议和通信
+protobuf==4.25.1
+grpcio==1.60.0
+grpcio-tools==1.60.0
+
+# 数据库
+redis==5.0.1
+hiredis==2.2.3
+motor==3.3.2
+pymongo==4.6.1
+
+# 任务队列
+celery==5.3.4
+kombu==5.3.4
+
+# 日志
+loguru==0.7.2
+
+# 数据验证和序列化
+pydantic==2.5.3
+marshmallow==3.20.1
+
+# 环境配置
+python-dotenv==1.0.0
+pyyaml==6.0.1
+
+# 异步文件操作
+aiofiles==23.2.1
+
+# 缓存
+aiocache==0.12.2
+
+# 加密
+cryptography==41.0.8
+argon2-cffi==23.1.0
+
+# 网络工具
+aiohttp==3.9.1
+requests==2.31.0
+psutil==5.9.6
+
+# 时间和时区
+python-dateutil==2.8.2
+
+# JSON工具
+orjson==3.9.10
+
+# 测试
+pytest==7.4.3
+pytest-asyncio==0.21.1
+pytest-cov==4.1.0
+
+# 开发工具
+black==23.11.0
+flake8==6.1.0
+mypy==1.7.1
+pre-commit==3.6.0
+
+# 监控和追踪
+prometheus-client==0.19.0
+jaeger-client==4.8.0
+
+# 配置管理
+dynaconf==3.2.4
+
+# 数据结构
+dataclasses-json==0.6.3
+
+# 性能分析
+memory-profiler==0.61.0
+line-profiler==4.1.1
+
+# 安全
+passlib==1.7.4
+python-jose==3.3.0
+
+# 部署
+gunicorn==21.2.0
+supervisor==4.2.5
+
+# API文档
+apispec==6.3.0
