@@ -1,0 +1,122 @@
+{
+  "version": "1.0",
+  "battle_id": "BATTLE001",
+  "start_time": 1751961755.5777073,
+  "end_time": 1751961755.5780199,
+  "event_count": 11,
+  "events": [
+    {
+      "event_id": "bfd5a71b-ea64-447a-8283-b499555de032",
+      "battle_id": "BATTLE001",
+      "event_type": "battle_start",
+      "timestamp": 1751961755.5777073
+    },
+    {
+      "event_id": "b486f4c6-c3b9-444c-9fe1-27bab7168616",
+      "battle_id": "BATTLE001",
+      "event_type": "player_join",
+      "timestamp": 1751961755.5777898,
+      "player_id": "player_001",
+      "player_level": 10,
+      "class_type": "warrior"
+    },
+    {
+      "event_id": "8e35b591-5b2a-443a-ab25-6af0780c090d",
+      "battle_id": "BATTLE_001",
+      "event_type": "player_join",
+      "timestamp": 1751961755.5778263,
+      "player_id": "player_002",
+      "player_level": 12,
+      "class_type": "mage"
+    },
+    {
+      "event_id": "ba4616f3-74ee-42fc-95ec-72143bc50de1",
+      "battle_id": "BATTLE_001",
+      "event_type": "round_start",
+      "timestamp": 1751961755.5778563,
+      "round_number": 1,
+      "players": [
+        "player_001",
+        "player_002"
+      ]
+    },
+    {
+      "event_id": "39a96e80-14ac-45c0-8606-ffebf2c6b5a6",
+      "battle_id": "BATTLE_001",
+      "event_type": "skill_cast",
+      "timestamp": 1751961755.5778792,
+      "player_id": "player_001",
+      "skill_id": "sword_slash",
+      "target_id": "player_002",
+      "mana_cost": 10,
+      "cooldown": 3,
+      "round_number": 1
+    },
+    {
+      "event_id": "85550466-d216-4379-90af-08cf143d6540",
+      "battle_id": "BATTLE_001",
+      "event_type": "damage_dealt",
+      "timestamp": 1751961755.5779033,
+      "source_id": "player_001",
+      "target_id": "player_002",
+      "damage": 85,
+      "damage_type": "physical",
+      "critical": true,
+      "armor_reduction": 15,
+      "round_number": 1
+    },
+    {
+      "event_id": "17bfa36b-58d5-4fa3-9a64-bd84851ca7d5",
+      "battle_id": "BATTLE_001",
+      "event_type": "skill_cast",
+      "timestamp": 1751961755.5779347,
+      "player_id": "player_002",
+      "skill_id": "fireball",
+      "target_id": "player_001",
+      "mana_cost": 25,
+      "spell_level": 2,
+      "round_number": 1
+    },
+    {
+      "event_id": "ef349f0e-35ae-4f05-b40e-022b606e0e67",
+      "battle_id": "BATTLE_001",
+      "event_type": "damage_dealt",
+      "timestamp": 1751961755.5779552,
+      "source_id": "player_002",
+      "target_id": "player_001",
+      "damage": 120,
+      "damage_type": "magic",
+      "element": "fire",
+      "round_number": 1
+    },
+    {
+      "event_id": "7da25cd0-5fb9-4121-9450-3bf5cfccd266",
+      "battle_id": "BATTLE_001",
+      "event_type": "player_move",
+      "timestamp": 1751961755.5779757,
+      "player_id": "player_001",
+      "from_x": 0,
+      "from_y": 0,
+      "to_x": 5,
+      "to_y": 3,
+      "movement_type": "walk",
+      "round_number": 1
+    },
+    {
+      "event_id": "ebb070ab-82ec-4e15-a8de-13f240d07504",
+      "battle_id": "BATTLE_001",
+      "event_type": "round_end",
+      "timestamp": 1751961755.5779996,
+      "round_number": 1,
+      "winner": "player_002",
+      "duration": 45.2
+    },
+    {
+      "event_id": "d25edb9b-014e-4787-842a-4f6969a29255",
+      "battle_id": "BATTLE_001",
+      "event_type": "battle_end",
+      "timestamp": 1751961755.5780199,
+      "round_number": 1
+    }
+  ]
+}
