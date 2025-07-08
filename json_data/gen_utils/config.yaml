@@ -1,0 +1,38 @@
+# Excel配置表生成工具配置文件
+
+# 输入输出配置
+input:
+  directory: "excel"
+  encoding: "utf-8"
+  
+output:
+  json_directory: "json_data/json" 
+  class_directory: "json_data/class_data"
+  
+# 生成配置
+generation:
+  usage: "cs"  # c/s/cs
+  backup_existing: true
+  validate_output: true
+  
+# 字段过滤配置
+field_filter:
+  client_only: ["c", "cs"]
+  server_only: ["s", "cs"]
+  
+# 命名规则
+naming:
+  snake_case: true
+  reserved_words_suffix: "_"
+  
+# 代码生成配置
+code_generation:
+  line_length: 88
+  use_dataclass: true
+  add_type_hints: true
+  add_docstrings: true
+  
+# 日志配置
+logging:
+  level: "INFO"
+  verbose: false

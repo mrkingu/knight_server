@@ -1,0 +1,47 @@
+# Protocol Buffers生成工具配置文件
+
+# 扫描配置
+scan:
+  directories: 
+    - "proto/class_data"
+  file_patterns: ["*.py"]
+  
+# 输出配置
+output:
+  directory: "proto/proto"
+  separate_files: true
+  
+# 消息类型配置
+message_types:
+  file_path: "proto/message_type.py"
+  auto_generate: true
+  
+# Proto文件配置
+proto:
+  syntax: "proto3"
+  package_prefix: "knight.server"
+  java_package: "com.knight.server.proto"
+  csharp_namespace: "KnightServer.Proto"
+  go_package: "github.com/knight-server/proto"
+  
+# 服务配置
+service:
+  generate_service: true
+  service_name: "MessageService"
+  
+# 类型转换配置
+type_conversion:
+  default_type: "string"
+  custom_mappings:
+    datetime: "string"
+    dict: "string"
+    
+# 代码生成配置
+code_generation:
+  add_comments: true
+  include_metadata: true
+  
+# 日志配置
+logging:
+  level: "INFO"
+  verbose: false
