@@ -82,7 +82,7 @@ class SLSBatchUploader:
         self._queue: deque = deque(maxlen=sls_config.max_queue_size)
         self._lock = threading.Lock()
         self._upload_task: Optional[asyncio.Task] = None
-        self._stop_event = asyncio.Event()
+        self._stop_event = threading.Event()
         
         # 启动批量上传任务
         self._start_upload_task()
