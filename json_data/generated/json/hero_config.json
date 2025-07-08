@@ -1,0 +1,114 @@
+{
+  "_metadata": {
+    "sheet_name": "hero_config",
+    "file_path": "hero_config.xlsx",
+    "generated_at": "2025-07-08T16:42:15.484305",
+    "generator": "knight_server.json_data.gen_utils.JSONGenerator",
+    "version": "1.0.0"
+  },
+  "_schema": {
+    "fields": [
+      {
+        "name": "hero_id",
+        "type": "int",
+        "comment": "英雄ID",
+        "usage": "cs"
+      },
+      {
+        "name": "name",
+        "type": "str",
+        "comment": "英雄名称",
+        "usage": "cs"
+      },
+      {
+        "name": "profession",
+        "type": "str",
+        "comment": "职业",
+        "usage": "cs"
+      },
+      {
+        "name": "level",
+        "type": "int",
+        "comment": "等级",
+        "usage": "cs"
+      },
+      {
+        "name": "hp",
+        "type": "int",
+        "comment": "血量",
+        "usage": "cs"
+      },
+      {
+        "name": "attack",
+        "type": "int",
+        "comment": "攻击力",
+        "usage": "cs"
+      },
+      {
+        "name": "defense",
+        "type": "int",
+        "comment": "防御力",
+        "usage": "cs"
+      },
+      {
+        "name": "skills",
+        "type": "list",
+        "comment": "技能列表",
+        "usage": "cs"
+      },
+      {
+        "name": "server_data",
+        "type": "dict",
+        "comment": "服务端数据",
+        "usage": "s"
+      }
+    ]
+  },
+  "data": [
+    {
+      "hero_id": 1001,
+      "name": "剑士",
+      "profession": "战士",
+      "level": 1,
+      "hp": 100,
+      "attack": 20,
+      "defense": 15,
+      "skills": [
+        1,
+        2,
+        3
+      ],
+      "server_data": "{'drop_rate': 0.1}"
+    },
+    {
+      "hero_id": 1002,
+      "name": "法师",
+      "profession": "法师",
+      "level": 1,
+      "hp": 80,
+      "attack": 25,
+      "defense": 10,
+      "skills": [
+        4,
+        5,
+        6
+      ],
+      "server_data": "{'drop_rate': 0.2}"
+    },
+    {
+      "hero_id": 1003,
+      "name": "弓箭手",
+      "profession": "射手",
+      "level": 1,
+      "hp": 90,
+      "attack": 22,
+      "defense": 12,
+      "skills": [
+        7,
+        8,
+        9
+      ],
+      "server_data": "{'drop_rate': 0.15}"
+    }
+  ]
+}

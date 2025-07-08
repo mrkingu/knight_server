@@ -1,0 +1,236 @@
+{
+  "description": "Excel配置表映射关系配置文件",
+  "version": "1.0.0",
+  "mappings": {
+    "hero_config.xlsx": {
+      "sheet_name": "hero_config",
+      "description": "英雄配置表",
+      "primary_key": "hero_id",
+      "client_usage": ["hero_id", "name", "profession", "level", "hp", "attack", "defense", "skills"],
+      "server_usage": ["hero_id", "name", "profession", "level", "hp", "attack", "defense", "skills", "server_data"],
+      "data_validation": {
+        "hero_id": {
+          "type": "int",
+          "required": true,
+          "unique": true
+        },
+        "name": {
+          "type": "str",
+          "required": true,
+          "max_length": 50
+        },
+        "profession": {
+          "type": "str",
+          "required": true,
+          "enum": ["战士", "法师", "射手", "刺客", "坦克", "辅助"]
+        },
+        "level": {
+          "type": "int",
+          "required": true,
+          "min": 1,
+          "max": 100
+        },
+        "hp": {
+          "type": "int",
+          "required": true,
+          "min": 1
+        },
+        "attack": {
+          "type": "int",
+          "required": true,
+          "min": 1
+        },
+        "defense": {
+          "type": "int",
+          "required": true,
+          "min": 0
+        },
+        "skills": {
+          "type": "list",
+          "required": false
+        },
+        "server_data": {
+          "type": "dict",
+          "required": false
+        }
+      }
+    },
+    "item_config.xlsx": {
+      "sheet_name": "item_config",
+      "description": "道具配置表",
+      "primary_key": "item_id",
+      "client_usage": ["item_id", "name", "type", "quality", "price", "description"],
+      "server_usage": ["item_id", "name", "type", "quality", "price", "server_config"],
+      "data_validation": {
+        "item_id": {
+          "type": "int",
+          "required": true,
+          "unique": true
+        },
+        "name": {
+          "type": "str",
+          "required": true,
+          "max_length": 50
+        },
+        "type": {
+          "type": "str",
+          "required": true,
+          "enum": ["武器", "防具", "消耗品", "材料", "任务物品"]
+        },
+        "quality": {
+          "type": "int",
+          "required": true,
+          "min": 1,
+          "max": 5
+        },
+        "price": {
+          "type": "int",
+          "required": true,
+          "min": 0
+        },
+        "description": {
+          "type": "str",
+          "required": false,
+          "max_length": 200
+        },
+        "server_config": {
+          "type": "dict",
+          "required": false
+        }
+      }
+    },
+    "skill_config.xlsx": {
+      "sheet_name": "skill_config",
+      "description": "技能配置表",
+      "primary_key": "skill_id",
+      "client_usage": ["skill_id", "name", "type", "level", "damage", "mana_cost", "cooldown", "description"],
+      "server_usage": ["skill_id", "name", "type", "level", "damage", "mana_cost", "cooldown", "server_data"],
+      "data_validation": {
+        "skill_id": {
+          "type": "int",
+          "required": true,
+          "unique": true
+        },
+        "name": {
+          "type": "str",
+          "required": true,
+          "max_length": 50
+        },
+        "type": {
+          "type": "str",
+          "required": true,
+          "enum": ["攻击", "防御", "辅助", "治疗", "控制"]
+        },
+        "level": {
+          "type": "int",
+          "required": true,
+          "min": 1,
+          "max": 10
+        },
+        "damage": {
+          "type": "int",
+          "required": false,
+          "min": 0
+        },
+        "mana_cost": {
+          "type": "int",
+          "required": true,
+          "min": 0
+        },
+        "cooldown": {
+          "type": "float",
+          "required": true,
+          "min": 0.0
+        },
+        "description": {
+          "type": "str",
+          "required": false,
+          "max_length": 200
+        },
+        "server_data": {
+          "type": "dict",
+          "required": false
+        }
+      }
+    },
+    "map_config.xlsx": {
+      "sheet_name": "map_config",
+      "description": "地图配置表",
+      "primary_key": "map_id",
+      "client_usage": ["map_id", "name", "scene_file", "background_music", "description"],
+      "server_usage": ["map_id", "name", "scene_file", "spawn_points", "server_config"],
+      "data_validation": {
+        "map_id": {
+          "type": "int",
+          "required": true,
+          "unique": true
+        },
+        "name": {
+          "type": "str",
+          "required": true,
+          "max_length": 50
+        },
+        "scene_file": {
+          "type": "str",
+          "required": true,
+          "max_length": 100
+        },
+        "background_music": {
+          "type": "str",
+          "required": false,
+          "max_length": 100
+        },
+        "description": {
+          "type": "str",
+          "required": false,
+          "max_length": 200
+        },
+        "spawn_points": {
+          "type": "list",
+          "required": false
+        },
+        "server_config": {
+          "type": "dict",
+          "required": false
+        }
+      }
+    }
+  },
+  "global_settings": {
+    "encoding": "utf-8",
+    "backup_existing_files": true,
+    "validate_generated_files": true,
+    "output_format": {
+      "json": {
+        "indent": 2,
+        "ensure_ascii": false
+      },
+      "python": {
+        "line_length": 88,
+        "use_dataclass": true,
+        "add_type_hints": true
+      }
+    },
+    "field_naming": {
+      "snake_case": true,
+      "reserved_words_suffix": "_"
+    }
+  },
+  "templates": {
+    "json_header": {
+      "version": "1.0.0",
+      "generator": "knight_server.json_data.gen_utils",
+      "generated_at": "auto"
+    },
+    "python_header": {
+      "encoding": "utf-8",
+      "auto_generated_warning": true,
+      "imports": [
+        "from typing import Optional, List, Dict, Any, Union",
+        "from dataclasses import dataclass, field",
+        "from datetime import datetime",
+        "import json"
+      ]
+    }
+  }
+}
