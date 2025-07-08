@@ -1,0 +1,225 @@
+distributed-game-server/
+├── common/                          # 公共模块
+│   ├── __init__.py
+│   ├── logger/                      # 日志模块
+│   │   ├── __init__.py
+│   │   ├── logger_factory.py        # 日志工厂类
+│   │   ├── sls_logger.py           # SLS日志实现
+│   │   ├── battle_logger.py        # 战斗日志实现
+│   │   └── config.py               # 日志配置
+│   │
+│   ├── proto/                       # 协议编解码模块
+│   │   ├── __init__.py
+│   │   ├── base_proto.py           # BaseRequest/BaseResponse
+│   │   ├── message_pool.py         # 消息对象池
+│   │   ├── ring_buffer.py          # 环形缓冲区
+│   │   ├── codec.py                # 编解码器
+│   │   └── header.py               # 消息头定义
+│   │
+│   ├── db/                          # 数据库模块
+│   │   ├── __init__.py
+│   │   ├── redis_manager.py        # Redis连接池管理
+│   │   ├── mongo_manager.py        # MongoDB连接池管理
+│   │   ├── base_document.py        # 基础文档类
+│   │   ├── base_repository.py      # 基础仓库类
+│   │   ├── cache_strategy.py       # 缓存策略
+│   │   ├── consistency.py          # 数据一致性处理
+│   │   └── auto_scanner.py         # 自动扫描注册
+│   │
+│   ├── grpc/                        # gRPC通信模块
+│   │   ├── __init__.py
+│   │   ├── grpc_pool.py            # 连接池管理
+│   │   ├── grpc_client.py          # 客户端封装
+│   │   ├── grpc_server.py          # 服务端封装
+│   │   ├── interceptor.py          # 拦截器
+│   │   └── health_check.py         # 健康检查
+│   │
+│   ├── table/                       # 配置表管理
+│   │   ├── __init__.py
+│   │   ├── table_manager.py        # 配置管理器
+│   │   ├── hot_reload.py           # 热更新实现
+│   │   ├── table_loader.py         # 加载器
+│   │   └── table_cache.py          # 配置缓存
+│   │
+│   ├── celery/                      # 定时任务模块
+│   │   ├── __init__.py
+│   │   ├── celery_app.py           # Celery应用
+│   │   ├── task_manager.py         # 任务管理器
+│   │   ├── beat_schedule.py        # 定时调度
+│   │   └── delay_task.py           # 延时任务
+│   │
+│   ├── notify/                      # 主动通知模块
+│   │   ├── __init__.py
+│   │   ├── notify_manager.py       # 通知管理器
+│   │   ├── push_service.py         # 推送服务
+│   │   ├── notify_queue.py         # 通知队列
+│   │   └── protocol_adapter.py     # 协议适配器
+│   │
+│   ├── decorator/                   # 装饰器模块
+│   │   ├── __init__.py
+│   │   ├── grpc_decorator.py       # gRPC装饰器
+│   │   ├── proto_decorator.py      # 协议装饰器
+│   │   ├── handler_decorator.py    # 处理器装饰器
+│   │   ├── celery_decorator.py     # Celery装饰器
+│   │   └── auth_decorator.py       # 认证装饰器
+│   │
+│   ├── registry/                    # 服务注册发现（新增）
+│   │   ├── __init__.py
+│   │   ├── service_registry.py     # 服务注册
+│   │   ├── service_discovery.py    # 服务发现
+│   │   ├── health_monitor.py       # 健康监控
+│   │   └── load_balancer.py        # 负载均衡
+│   │
+│   ├── security/                    # 安全模块（新增）
+│   │   ├── __init__.py
+│   │   ├── jwt_auth.py             # JWT认证
+│   │   ├── signature.py            # 签名验证
+│   │   ├── rate_limiter.py         # 限流器
+│   │   └── circuit_breaker.py      # 熔断器
+│   │
+│   ├── monitor/                     # 监控模块（新增）
+│   │   ├── __init__.py
+│   │   ├── tracer.py               # 链路追踪
+│   │   ├── metrics.py              # 指标收集
+│   │   ├── alert_manager.py        # 告警管理
+│   │   └── performance.py          # 性能监控
+│   │
+│   ├── distributed/                 # 分布式支持（新增）
+│   │   ├── __init__.py
+│   │   ├── distributed_lock.py     # 分布式锁
+│   │   ├── transaction.py          # 分布式事务
+│   │   ├── consistency.py          # 一致性保障
+│   │   └── id_generator.py         # 分布式ID生成
+│   │
+│   └── utils/                       # 工具类（新增）
+│       ├── __init__.py
+│       ├── singleton.py            # 单例模式
+│       ├── async_utils.py          # 异步工具
+│       ├── time_utils.py           # 时间工具
+│       └── validation.py           # 验证工具
+│
+├── tasks/                           # 分布式任务
+│   └── __init__.py
+│
+├── json_data/                       # JSON配置数据
+│   ├── __init__.py
+│   ├── json/                        # JSON文件目录
+│   ├── class_data/                  # Python类文件
+│   ├── gen_utils/                   # 生成工具
+│   │   ├── __init__.py
+│   │   ├── excel_parser.py         # Excel解析器
+│   │   ├── json_generator.py       # JSON生成器
+│   │   └── class_generator.py      # 类生成器
+│   └── sheet_mapping.json           # Sheet映射配置
+│
+├── proto/                           # 协议定义
+│   ├── __init__.py
+│   ├── proto/                       # Proto文件目录
+│   │   ├── client_proto/            # 客户端协议
+│   │   └── server_proto/            # 服务端协议
+│   ├── class_data/                  # Python协议类
+│   ├── gen_utils/                   # 生成工具
+│   │   ├── __init__.py
+│   │   └── proto_generator.py      # Proto生成器
+│   └── message_type.py              # 消息类型定义
+│
+├── models/                          # 数据模型
+│   ├── __init__.py
+│   ├── document/                    # 数据文档
+│   │   ├── __init__.py
+│   │   ├── user_document.py        # 用户文档
+│   │   ├── game_document.py        # 游戏文档
+│   │   └── ...                     # 其他文档
+│   ├── repository/                  # 数据仓库
+│   │   └── __init__.py             # 自动生成的仓库类
+│   └── gen_utils/                   # 生成工具
+│       ├── __init__.py
+│       └── repository_generator.py  # 仓库生成器
+│
+├── setting/                         # 配置管理
+│   ├── __init__.py
+│   ├── config.py                    # 配置类
+│   ├── development.py               # 开发环境配置
+│   ├── production.py                # 生产环境配置
+│   ├── server_config/               # 服务器配置
+│   │   ├── nginx.conf              # Nginx配置
+│   │   ├── supervisor.conf         # Supervisor配置
+│   │   └── docker-compose.yml      # Docker配置
+│   └── env_manager.py               # 环境管理器
+│
+├── services/                        # 微服务
+│   ├── __init__.py
+│   ├── base/                        # 基础服务类（新增）
+│   │   ├── __init__.py
+│   │   ├── base_server.py          # 基础服务器
+│   │   ├── base_handler.py         # 基础处理器
+│   │   ├── base_controller.py      # 基础控制器
+│   │   ├── base_service.py         # 基础服务
+│   │   └── base_notify.py          # 基础通知
+│   │
+│   ├── gate/                        # 网关服务
+│   │   ├── __init__.py
+│   │   ├── gate_server.py          # 网关服务器
+│   │   ├── gate_handler.py         # 网关处理器
+│   │   ├── controllers/            # 控制器目录
+│   │   │   ├── __init__.py
+│   │   │   └── auth_controller.py  # 认证控制器
+│   │   ├── services/               # 服务目录
+│   │   │   ├── __init__.py
+│   │   │   ├── route_service.py    # 路由服务
+│   │   │   └── notify_service.py   # 通知服务
+│   │   └── middleware/             # 中间件
+│   │       ├── __init__.py
+│   │       └── auth_middleware.py  # 认证中间件
+│   │
+│   ├── logic/                       # 逻辑服务
+│   │   ├── __init__.py
+│   │   ├── logic_server.py         # 逻辑服务器
+│   │   ├── logic_handler.py        # 逻辑处理器
+│   │   ├── controllers/            # 控制器目录
+│   │   ├── services/               # 服务目录
+│   │   └── notify_service.py       # 通知服务
+│   │
+│   ├── chat/                        # 聊天服务
+│   │   ├── __init__.py
+│   │   ├── chat_server.py          # 聊天服务器
+│   │   ├── chat_handler.py         # 聊天处理器
+│   │   ├── controllers/            # 控制器目录
+│   │   ├── services/               # 服务目录
+│   │   └── notify_service.py       # 通知服务
+│   │
+│   └── fight/                       # 战斗服务
+│       ├── __init__.py
+│       ├── fight_server.py         # 战斗服务器
+│       ├── fight_handler.py        # 战斗处理器
+│       ├── controllers/            # 控制器目录
+│       ├── services/               # 服务目录
+│       └── notify_service.py       # 通知服务
+│
+├── server_launcher/                 # 服务启动器
+│   ├── __init__.py
+│   ├── launcher.py                 # 启动器主程序
+│   ├── service_manager.py          # 服务管理器
+│   ├── process_monitor.py          # 进程监控
+│   └── banner.py                   # 启动画面
+│
+├── tests/                           # 测试目录（新增）
+│   ├── __init__.py
+│   ├── unit/                       # 单元测试
+│   ├── integration/                # 集成测试
+│   └── performance/                # 性能测试
+│
+├── scripts/                         # 脚本目录（新增）
+│   ├── deploy.sh                   # 部署脚本
+│   ├── backup.sh                   # 备份脚本
+│   └── monitor.sh                  # 监控脚本
+│
+├── docs/                            # 文档目录（新增）
+│   ├── API.md                      # API文档
+│   ├── ARCHITECTURE.md             # 架构文档
+│   └── DEPLOYMENT.md               # 部署文档
+│
+├── requirements.txt                 # 依赖列表
+├── .gitignore                      # Git忽略文件
+├── README.md                       # 项目说明
+└── setup.py                        # 安装脚本
