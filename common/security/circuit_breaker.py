@@ -115,7 +115,7 @@ class CircuitHalfOpenError(CircuitBreakerError):
     pass
 
 
-class CircuitBreakerStrategy:
+class CircuitBreakerStrategyBase(ABC):
     """熔断器策略接口"""
     
     @abstractmethod
@@ -131,7 +131,7 @@ class CircuitBreakerStrategy:
         pass
 
 
-class FailureRateStrategy(CircuitBreakerStrategy):
+class FailureRateStrategy(CircuitBreakerStrategyBase):
     """失败率策略"""
     
     def __init__(self, config: CircuitBreakerConfig):
@@ -156,7 +156,7 @@ class FailureRateStrategy(CircuitBreakerStrategy):
         return all(result.success for result in recent_calls)
 
 
-class ResponseTimeStrategy(CircuitBreakerStrategy):
+class ResponseTimeStrategy(CircuitBreakerStrategyBase):
     """响应时间策略"""
     
     def __init__(self, config: CircuitBreakerConfig):
@@ -185,7 +185,7 @@ class ResponseTimeStrategy(CircuitBreakerStrategy):
         return avg_response_time < self.config.response_time_threshold
 
 
-class FailureCountStrategy(CircuitBreakerStrategy):
+class FailureCountStrategy(CircuitBreakerStrategyBase):
     """失败次数策略"""
     
     def __init__(self, config: CircuitBreakerConfig):
@@ -207,7 +207,7 @@ class FailureCountStrategy(CircuitBreakerStrategy):
         return all(result.success for result in recent_calls)
 
 
-class ConsecutiveFailuresStrategy(CircuitBreakerStrategy):
+class ConsecutiveFailuresStrategy(CircuitBreakerStrategyBase):
     """连续失败策略"""
     
     def __init__(self, config: CircuitBreakerConfig):
@@ -271,7 +271,7 @@ class CircuitBreaker:
         if self.config.enable_distributed_state and self.redis_manager:
             self._start_state_sync()
     
-    def _create_strategy(self) -> CircuitBreakerStrategy:
+    def _create_strategy(self) -> CircuitBreakerStrategyBase:
         """创建熔断策略"""
         if self.config.strategy == CircuitBreakerStrategy.FAILURE_RATE:
             return FailureRateStrategy(self.config)

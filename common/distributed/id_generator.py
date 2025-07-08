@@ -132,8 +132,10 @@ class SnowflakeIDGenerator:
         if self.config.worker_id < 0 or self.config.worker_id > self.config.max_worker_id:
             raise InvalidConfigError(f"工作节点ID超出范围: {self.config.worker_id}")
         
-        if self.config.sequence_bits + self.config.worker_id_bits + self.config.datacenter_id_bits >= 22:
-            raise InvalidConfigError("位数配置超出限制")
+        # 修正位数验证：总位数应该是41位时间戳 + 配置的位数 <= 63位（保留1位符号位）
+        total_bits = self.config.sequence_bits + self.config.worker_id_bits + self.config.datacenter_id_bits
+        if total_bits > 22:  # 41位时间戳 + 22位其他 = 63位
+            raise InvalidConfigError(f"位数配置超出限制: 总位数{total_bits}超过22位限制")
     
     async def _register_worker(self):
         """注册工作节点"""
