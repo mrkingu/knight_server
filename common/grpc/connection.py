@@ -105,7 +105,7 @@ class ConnectionConfig:
     user_agent: Optional[str] = None               # 用户代理
     metadata: Optional[Dict[str, str]] = field(default_factory=dict)  # 元数据
 
-    def get_channel_options(self) -> List[tuple]:
+    def get_channel_options(self) -> list:
         """获取channel选项"""
         options = [
             ('grpc.keepalive_time_ms', self.keepalive_time_ms),
