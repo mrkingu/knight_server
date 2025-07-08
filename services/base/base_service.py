@@ -599,8 +599,8 @@ class BaseService:
                 if inspect.iscoroutinefunction(func):
                     return await func(*args, **kwargs)
                 else:
-                    return func(*args, **kwargs)
-                    
+                    loop = asyncio.get_running_loop()
+                    return await loop.run_in_executor(None, functools.partial(func, *args, **kwargs))
             except Exception as e:
                 last_exception = e
                 
