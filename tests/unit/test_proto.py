@@ -11,7 +11,8 @@ import pytest
 from unittest import TestCase
 
 import sys
-sys.path.insert(0, '/home/runner/work/knight_server/knight_server')
+import os
+sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '../../knight_server')))
 
 from common.proto import *
 from google.protobuf.message import Message
