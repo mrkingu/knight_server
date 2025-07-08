@@ -369,8 +369,8 @@ class BattleLogger(BaseLogger):
             'battle_id': battle_id,
             'event_type': event_type,
             'event_id': event.event_id,
-            **kwargs
         }
+        log_data.update(kwargs)
         self.info(f"Battle event: {event_type}", **log_data)
     
     # 战斗专用便捷方法

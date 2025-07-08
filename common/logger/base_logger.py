@@ -214,8 +214,12 @@ class BaseLogger:
             # 格式化消息
             formatted_message = self._format_message(message, *args)
             
-            # 准备上下文数据
+            # 准备上下文数据，避免冲突的关键字
             extra = self._prepare_extra(**kwargs)
+            
+            # 移除可能与loguru冲突的参数
+            filtered_kwargs = {k: v for k, v in kwargs.items() 
+                             if k not in ['level', 'message', 'time', 'record', 'exception']}
             
             # 使用loguru记录日志
             if LOGURU_AVAILABLE:

@@ -1,0 +1,70 @@
+{
+  "version": "1.0",
+  "battle_id": "BATTLE001",
+  "start_time": 1751961475.9973469,
+  "end_time": 1751961475.9977236,
+  "event_count": 7,
+  "events": [
+    {
+      "event_id": "87125041-3fff-4403-bd89-d555136aaa47",
+      "battle_id": "BATTLE001",
+      "event_type": "battle_start",
+      "timestamp": 1751961475.9973469
+    },
+    {
+      "event_id": "6d6009e3-6350-471f-baea-0b2cf4539401",
+      "battle_id": "BATTLE001",
+      "event_type": "player_join",
+      "timestamp": 1751961475.9974053,
+      "player_id": "player001",
+      "player_level": 10,
+      "class_type": "warrior"
+    },
+    {
+      "event_id": "0f978b2f-35fd-469c-8884-0eb51f321b93",
+      "battle_id": "BATTLE001",
+      "event_type": "skill_cast",
+      "timestamp": 1751961475.9974818,
+      "player_id": "player001",
+      "skill_id": "skill_fireball",
+      "target_id": "player002",
+      "damage": 50
+    },
+    {
+      "event_id": "c69f62b4-0dd7-45ba-b304-22a65d5f452e",
+      "battle_id": "BATTLE001",
+      "event_type": "damage_dealt",
+      "timestamp": 1751961475.9975452,
+      "source_id": "player001",
+      "target_id": "player002",
+      "damage": 50,
+      "damage_type": "magic"
+    },
+    {
+      "event_id": "bc8e8f44-4e5d-40c6-9b21-16f0195ea14f",
+      "battle_id": "BATTLE001",
+      "event_type": "round_start",
+      "timestamp": 1751961475.9976053,
+      "round_number": 1,
+      "players": [
+        "player001",
+        "player002"
+      ]
+    },
+    {
+      "event_id": "7b85459b-0e01-49b7-8d87-e394ef6e736a",
+      "battle_id": "BATTLE001",
+      "event_type": "round_end",
+      "timestamp": 1751961475.9976656,
+      "round_number": 1,
+      "winner": "player001"
+    },
+    {
+      "event_id": "89a411ef-4d6d-4025-9fd6-ad9e486f0b5f",
+      "battle_id": "BATTLE001",
+      "event_type": "battle_end",
+      "timestamp": 1751961475.9977236,
+      "round_number": 1
+    }
+  ]
+}
