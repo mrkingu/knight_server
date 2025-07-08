@@ -29,7 +29,6 @@ def generate_id():
     return str(int(time.time() * 1000000) + random.randint(1000, 9999))
 
 # Patch the modules
-import sys
 sys.modules['common.logger'] = type('MockModule', (), {'logger': MockLogger()})()
 sys.modules['common.utils.id_generator'] = type('MockModule', (), {'generate_id': generate_id})()
 sys.modules['common.utils.singleton'] = type('MockModule', (), {
