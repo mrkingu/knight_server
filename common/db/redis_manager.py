@@ -518,14 +518,14 @@ class RedisManager(Singleton):
                 else:
                     result = await conn.get(key)
                 
-                if result:
+                if result is not None:
                     # 尝试JSON反序列化
                     try:
                         return json.loads(result)
                     except (json.JSONDecodeError, TypeError):
                         return result
                 
-                return result
+                return None
                 
         except Exception as e:
             logger.error(f"Redis GET 操作失败 {key}: {e}")
