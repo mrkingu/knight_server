@@ -421,7 +421,7 @@ class RingBuffer:
                 return None
             
             # 读取长度字段
-            length_data = await self._peek_no_lock(header_size)
+            length_data = self._peek_no_lock(header_size)
             
             # 解析消息长度
             if header_size == 1:
