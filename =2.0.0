@@ -1,0 +1,15 @@
+Defaulting to user installation because normal site-packages is not writeable
+Requirement already satisfied: pyjwt in /usr/lib/python3/dist-packages (2.7.0)
+Collecting aioredis
+  Downloading aioredis-2.0.1-py3-none-any.whl.metadata
+     - 16.0 kB 174.1 MB/s 0:00:00
+Collecting async-timeout (from aioredis)
+  Downloading async_timeout-5.0.1-py3-none-any.whl.metadata
+     - 5.1 kB ? 0:00:00
+Requirement already satisfied: typing-extensions in /usr/lib/python3/dist-packages (from aioredis) (4.10.0)
+Downloading aioredis-2.0.1-py3-none-any.whl
+   - 71.2 kB 49.5 MB/s 0:00:00
+Downloading async_timeout-5.0.1-py3-none-any.whl
+   - 6.2 kB ? 0:00:00
+Installing collected packages: async-timeout, aioredis
+Successfully installed aioredis-2.0.1 async-timeout-5.0.1
