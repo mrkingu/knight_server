@@ -494,8 +494,13 @@ class ServiceDiscovery:
                 if cache_key not in self._cache:
                     break
                 
-                # TODO: 实现后台刷新逻辑
-                # 这里可以根据缓存键解析出查询参数，然后重新查询
+                # 实现后台刷新逻辑
+                discovery_filter = self._parse_cache_key(cache_key)
+                try:
+                    refreshed_services = await self._query_services(discovery_filter)
+                    await self._update_cache(cache_key, refreshed_services)
+                except BaseRegistryException as e:
+                    logger.error(f"刷新服务数据失败: {cache_key} - {e}")
                 
         except asyncio.CancelledError:
             pass
