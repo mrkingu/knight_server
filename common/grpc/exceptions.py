@@ -415,7 +415,35 @@ def handle_grpc_exception(func):
     return wrapper
 
 
-async def handle_grpc_exception_async(func):
+def handle_grpc_exception(func):
+    """
+    gRPC异常处理装饰器
+    
+    自动捕获并转换标准异常为gRPC异常，提供统一的异常处理机制。
+    
+    Usage:
+        @handle_grpc_exception
+        def some_grpc_method():
+            # 方法实现
+            pass
+    """
+    def wrapper(*args, **kwargs):
+        try:
+            return func(*args, **kwargs)
+        except GrpcException:
+            # 已经是gRPC异常，直接重新抛出
+            raise
+        except ConnectionError as e:
+            raise GrpcConnectionError(f"连接失败: {e}", cause=e)
+        except TimeoutError as e:
+            raise GrpcTimeoutError(f"操作超时: {e}", cause=e)
+        except Exception as e:
+            raise GrpcException(f"未知错误: {e}", cause=e)
+    
+    return wrapper
+
+
+def handle_grpc_exception_async(func):
     """
     异步gRPC异常处理装饰器
     

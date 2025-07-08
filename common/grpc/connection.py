@@ -19,7 +19,32 @@ try:
 except ImportError:
     # 如果grpc未安装，创建模拟对象以避免导入错误
     grpc = None
-    grpc_aio = None
+    
+    class MockChannel:
+        async def channel_ready(self):
+            pass
+        
+        async def close(self):
+            pass
+        
+        def close(self):
+            pass
+        
+        def get_state(self, try_to_connect=False):
+            return 1  # READY
+    
+    class MockGrpcAio:
+        Channel = MockChannel
+        
+        @staticmethod
+        def insecure_channel(address, options=None):
+            return MockChannel()
+        
+        @staticmethod
+        def secure_channel(address, credentials, options=None):
+            return MockChannel()
+    
+    grpc_aio = MockGrpcAio()
 
 from ..logger import logger
 from .exceptions import (

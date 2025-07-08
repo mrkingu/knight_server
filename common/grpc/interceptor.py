@@ -20,10 +20,11 @@ try:
     from grpc_interceptor import ExceptionToStatusInterceptor
     from grpc_interceptor.server import AsyncServerInterceptor
     from grpc_interceptor.client import AsyncClientInterceptor
+    GRPC_INTERCEPTOR_AVAILABLE = True
 except ImportError:
     # 如果grpc未安装，创建模拟基类
     grpc = None
-    grpc_aio = None
+    GRPC_INTERCEPTOR_AVAILABLE = False
     
     class AsyncServerInterceptor:
         pass
@@ -33,6 +34,18 @@ except ImportError:
     
     class ExceptionToStatusInterceptor:
         pass
+    
+    class MockStatusCode:
+        UNAVAILABLE = type('StatusCode', (), {'value': 14})()
+        DEADLINE_EXCEEDED = type('StatusCode', (), {'value': 4})()
+        RESOURCE_EXHAUSTED = type('StatusCode', (), {'value': 8})()
+        ABORTED = type('StatusCode', (), {'value': 10})()
+    
+    class MockGrpc:
+        StatusCode = MockStatusCode()
+    
+    grpc = MockGrpc()
+    grpc_aio = None
 
 from ..logger import logger
 from .exceptions import (

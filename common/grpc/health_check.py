@@ -16,10 +16,12 @@ try:
     import grpc
     from grpc import aio as grpc_aio
     from grpc_health.v1 import health_pb2, health_pb2_grpc
+    GRPC_HEALTH_AVAILABLE = True
 except ImportError:
-    # 如果grpc未安装，创建模拟对象
+    # 如果grpc或health未安装，创建模拟对象
     grpc = None
     grpc_aio = None
+    GRPC_HEALTH_AVAILABLE = False
     
     # 模拟health_pb2的内容
     class health_pb2:
@@ -42,6 +44,17 @@ except ImportError:
         @staticmethod
         def add_HealthServicer_to_server(servicer, server):
             pass
+    
+    # 模拟grpc_aio的ServicerContext
+    class MockServicerContext:
+        def cancelled(self):
+            return False
+    
+    # 创建模拟的grpc_aio模块
+    class MockGrpcAio:
+        ServicerContext = MockServicerContext
+    
+    grpc_aio = MockGrpcAio()
 
 from ..logger import logger
 from .exceptions import GrpcHealthCheckError, handle_grpc_exception_async
@@ -516,15 +529,23 @@ class HealthCheckService:
             
             await asyncio.gather(*tasks, return_exceptions=True)
     
-    async def set_service_status(self, service_name: str, status: HealthStatus, message: Optional[str] = None) -> None:
+    async def set_service_status(self, service_name: str, status: Union[HealthStatus, str], message: Optional[str] = None) -> None:
         """
         手动设置服务状态
         
         Args:
             service_name: 服务名称
-            status: 健康状态
+            status: 健康状态（HealthStatus枚举或字符串）
             message: 状态消息
         """
+        # 如果传入的是字符串，转换为HealthStatus枚举
+        if isinstance(status, str):
+            try:
+                status = HealthStatus(status)
+            except ValueError:
+                # 如果字符串无法转换，使用UNKNOWN状态
+                status = HealthStatus.UNKNOWN
+        
         result = HealthCheckResult(
             service_name=service_name,
             status=status,
@@ -684,12 +705,12 @@ def add_health_service_to_server(server, health_service: HealthCheckService) -> 
         server: gRPC服务器
         health_service: 健康检查服务
     """
-    if health_pb2_grpc:
+    if GRPC_HEALTH_AVAILABLE:
         servicer = GrpcHealthServicer(health_service)
         health_pb2_grpc.add_HealthServicer_to_server(servicer, server)
         logger.info("健康检查服务已添加到gRPC服务器")
     else:
-        logger.warning("grpcio-health未安装，无法添加健康检查服务")
+        logger.warning("grpcio-health-checking未安装，无法添加健康检查服务")
 
 
 # 便捷函数
