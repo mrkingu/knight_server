@@ -148,7 +148,8 @@ async def example_client():
             default_metadata={"client_version": "1.0.0"}
         )
         
-        # 创建客户端
+        # 3. 创建客户端
+        endpoints = ["127.0.0.1:50051", "127.0.0.1:50052"]
         client = await create_client(
             service_name="GameService",
             endpoints=endpoints,
@@ -196,8 +197,10 @@ async def example_connection_pool():
     print("\n=== 连接池示例 ===")
     
     try:
+        # 导入连接池创建函数
+        from common.grpc import create_pool
+        
         # 1. 创建连接池
-        from common.grpc.grpc_pool import create_pool
         pool = await create_pool(
             name="test_pool",
             target="127.0.0.1",
