@@ -628,9 +628,21 @@ class BaseRepository:
         try:
             # 获取所有相关的列表缓存键
             pattern = f"{self.cache_key_prefix}:list:*"
-            # 由于我们的mock Redis不支持模式匹配，这里简化处理
-            # 实际环境中可以使用Redis的SCAN命令
-            logger.debug(f"清除列表缓存: {pattern}")
+            cursor = "0"
+            keys_to_delete = []
+            
+            # 使用SCAN命令获取匹配的键
+            while True:
+                cursor, keys = await redis_manager.scan(cursor, match=pattern, count=100)
+                keys_to_delete.extend(keys)
+                if cursor == "0":  # SCAN返回的游标为"0"时表示遍历结束
+                    break
+            
+            # 删除匹配的键
+            if keys_to_delete:
+                await redis_manager.delete(*keys_to_delete)
+            
+            logger.debug(f"清除列表缓存: {pattern}, 删除键数量: {len(keys_to_delete)}")
         except Exception as e:
             logger.warning(f"清除列表缓存失败: {e}")
     
