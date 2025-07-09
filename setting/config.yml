@@ -1,0 +1,228 @@
+# 环境配置
+environment: development  # development, testing, production
+
+# 通用配置
+common:
+  log_level: info
+  log_dir: logs
+  # 日志文件保留天数
+  log_retention_days: 7
+  # 是否输出到控制台
+  log_to_console: true
+
+# 数据库配置
+database:
+  mongodb:
+    host: mongodb://localhost:27017
+    db: game_dev
+    password: test
+    # 连接池配置
+    max_pool_size: 100
+    min_pool_size: 10
+    # 超时配置（毫秒）
+    connect_timeout: 5000
+    socket_timeout: 30000
+    
+  redis:
+    host: localhost
+    port: 6379
+    db: 0
+    password: null
+    # 连接池配置
+    max_connections: 100
+    # Redis桶号配置 - 用于数据分片和缓存隔离
+    bucket_config:
+      # 总桶数
+      total_buckets: 16
+      # 默认桶号
+      default_bucket: 0
+      # 桶号分配策略
+      bucket_strategy: "hash"  # hash, range, custom
+      # 每个桶的配置
+      buckets:
+        0: {db: 0, prefix: "bucket_0"}
+        1: {db: 1, prefix: "bucket_1"}
+        2: {db: 2, prefix: "bucket_2"}
+        3: {db: 3, prefix: "bucket_3"}
+        4: {db: 4, prefix: "bucket_4"}
+        5: {db: 5, prefix: "bucket_5"}
+        6: {db: 6, prefix: "bucket_6"}
+        7: {db: 7, prefix: "bucket_7"}
+        8: {db: 8, prefix: "bucket_8"}
+        9: {db: 9, prefix: "bucket_9"}
+        10: {db: 10, prefix: "bucket_10"}
+        11: {db: 11, prefix: "bucket_11"}
+        12: {db: 12, prefix: "bucket_12"}
+        13: {db: 13, prefix: "bucket_13"}
+        14: {db: 14, prefix: "bucket_14"}
+        15: {db: 15, prefix: "bucket_15"}
+
+# 服务注册中心配置（如果使用）
+registry:
+  enabled: false
+  type: etcd  # etcd, consul
+  endpoints:
+    - http://localhost:2379
+  ttl: 10  # 服务注册TTL（秒）
+
+# Celery配置
+celery:
+  broker: redis://localhost:6379/1
+  backend: redis://localhost:6379/2
+  timezone: Asia/Shanghai
+  # 任务配置
+  task_routes:
+    'tasks.scheduled.*': {'queue': 'scheduled'}
+    'tasks.delayed.*': {'queue': 'delayed'}
+
+# 启动配置
+launcher:
+  # 启动顺序
+  startup_order:
+    - gate
+    - logic
+    - chat
+    - fight
+  
+  # 停止顺序（默认按启动顺序逆序）
+  shutdown_order:
+    - fight
+    - chat
+    - logic
+    - gate
+  
+  # 健康检查配置
+  health_check:
+    enabled: true
+    interval: 10  # 检查间隔（秒）
+    timeout: 5    # 超时时间（秒）
+    max_retries: 3  # 最大重试次数
+  
+  # 自动重启配置
+  auto_restart:
+    enabled: true
+    max_restart_count: 3  # 最大重启次数
+    restart_delay: 5      # 重启延迟（秒）
+
+# 服务配置
+services:
+  # Gate服务 - 网关
+  gate:
+    # 服务实例配置
+    instances:
+      - port: 8000
+        name: gate-8000
+      # - port: 8001
+      #   name: gate-8001
+    
+    # 服务配置
+    settings:
+      # Sanic配置
+      workers: 1
+      access_log: true
+      auto_reload: false
+      
+      # WebSocket配置
+      websocket_max_size: 1048576  # 1MB
+      websocket_ping_interval: 10
+      websocket_ping_timeout: 30
+      
+      # 性能配置
+      request_timeout: 60
+      response_timeout: 60
+      keep_alive_timeout: 5
+      
+      # 限流配置
+      rate_limit:
+        enabled: true
+        max_requests: 100
+        window: 60  # 时间窗口（秒）
+    
+    # 启动配置
+    startup_interval: 1.0  # 实例间启动间隔（秒）
+    
+  # Logic服务 - 业务逻辑
+  logic:
+    instances:
+      - port: 70052
+        name: logic-70052
+      # - port: 70054
+      #   name: logic-70054
+    
+    settings:
+      # 进程配置
+      workers: 4
+      
+      # gRPC配置
+      max_concurrent_requests: 1000
+      max_receive_message_length: 4194304  # 4MB
+      max_send_message_length: 4194304     # 4MB
+      
+      # 业务配置
+      request_timeout: 30
+      cache_ttl: 300  # 缓存过期时间（秒）
+    
+    startup_interval: 0.5
+    
+  # Chat服务 - 聊天
+  chat:
+    instances:
+      - port: 70051
+        name: chat-70051
+      # - port: 70055
+      #   name: chat-70055
+    
+    settings:
+      # 进程配置
+      workers: 2
+      
+      # 聊天配置
+      max_message_length: 500
+      max_room_users: 100
+      message_rate_limit: 10  # 每分钟最大消息数
+      
+      # 历史消息配置
+      history_message_count: 100
+      history_retention_days: 7
+    
+    startup_interval: 0.5
+    
+  # Fight服务 - 战斗
+  fight:
+    instances:
+      - port: 70053
+        name: fight-70053
+      # - port: 70056
+      #   name: fight-70056
+    
+    settings:
+      # 进程配置
+      workers: 2
+      
+      # 战斗配置
+      max_battle_time: 300      # 最大战斗时长（秒）
+      battle_tick_rate: 0.1     # 战斗帧率（秒）
+      max_players_per_battle: 10
+      
+      # 性能配置
+      battle_pool_size: 100     # 战斗对象池大小
+      enable_battle_record: true # 是否记录战斗录像
+    
+    startup_interval: 0.5
+
+# 监控配置
+monitoring:
+  # Prometheus配置
+  prometheus:
+    enabled: false
+    port: 9090
+  
+  # 性能监控
+  performance:
+    enabled: true
+    collect_interval: 60  # 收集间隔（秒）
+    
+  # 告警配置
+  alerting:
+    enabled: false
+    webhook_url: ""
