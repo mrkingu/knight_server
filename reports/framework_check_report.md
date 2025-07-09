@@ -1,12 +1,12 @@
 # 框架完整性检查报告
-生成时间: 2025-07-09 02:28:21
+生成时间: 2025-07-09 02:44:16
 项目路径: .
 
 ## 检查摘要
 - 🔴 错误: 0
-- 🟡 警告: 138
-- 🔄 重复: 84
-- 📦 导入错误: 2
+- 🟡 警告: 141
+- 🔄 重复: 88
+- 📦 导入错误: 0
 
 ## 🟡 警告信息
 - **no_exports**: 模块 common.utils 没有定义 __all__
@@ -18,6 +18,9 @@
 - **no_exports**: 模块 server_launcher.service_manager 没有定义 __all__
   - 路径: `server_launcher.service_manager`
 
+- **no_exports**: 模块 setting.config 没有定义 __all__
+  - 路径: `setting.config`
+
 - **unimplemented_method**: 未实现的方法: simple_logger.py:78
 
 - **unimplemented_method**: 未实现的方法: server_launcher/launcher.py:36
@@ -27,6 +30,10 @@
 - **unimplemented_method**: 未实现的方法: server_launcher/cli.py:680
 
 - **unimplemented_method**: 未实现的方法: server_launcher/cli.py:714
+
+- **unimplemented_method**: 未实现的方法: scripts/verify_startup.py:197
+
+- **unimplemented_method**: 未实现的方法: scripts/verify_startup.py:250
 
 - **unimplemented_method**: 未实现的方法: common/celery/__init__.py:21
 
@@ -359,6 +366,25 @@
   - `proto/class_data/example_response.py`
   - `services/logic/controllers/user_controller.py`
 
+- **duplicate_class**: 发现重复类名: GateServer
+  - `services/__init__.py`
+  - `services/gate/gate_server.py`
+  - `services/gate/__init__.py`
+
+- **duplicate_class**: 发现重复类名: LogicServer
+  - `services/__init__.py`
+  - `services/logic/logic_server.py`
+  - `services/logic/__init__.py`
+
+- **duplicate_class**: 发现重复类名: ChatServer
+  - `services/__init__.py`
+  - `services/chat/__init__.py`
+  - `services/chat/chat_server.py`
+
+- **duplicate_class**: 发现重复类名: FightServer
+  - `services/__init__.py`
+  - `services/fight/__init__.py`
+
 - **duplicate_class**: 发现重复类名: GetUserInfoRequest
   - `proto/class_data/example_request.py`
   - `services/logic/controllers/user_controller.py`
@@ -664,11 +690,6 @@
   - `common/logger/battle_logger.py`
   - `common/logger/base_logger.py`
 
-## 📦 导入错误
-- **common.proto**: 导入模块 common.proto 失败: No module named 'google'
-
-- **setting.config**: 导入模块 setting.config 失败: No module named 'pydantic'
-
 ## 🔗 模块依赖关系
 - `test_gateway` 依赖:
   - `services.gate.config`
@@ -760,6 +781,7 @@
   - `common.monitor`
   - `common.notify`
   - `common.proto`
+  - `common.proto.header`
   - `common.security`
   - `services.base`
   - `services.chat`
@@ -1152,9 +1174,8 @@
   - `common.security`
 
 ## 💡 改进建议
-2. 解决导入错误，确保所有模块能正常导入
 3. 检查并合并重复的实现
 4. 处理警告信息，提高代码质量
 
 ## 总结
-❌ 发现问题需要修复，建议优先处理错误级别的问题
+✅ 框架整体结构良好，可以正常运行
