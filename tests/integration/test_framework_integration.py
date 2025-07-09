@@ -176,13 +176,13 @@ class TestFrameworkIntegration:
                 
                 # 创建分布式锁配置
                 lock_config = LockConfig(
-                    ttl=30,
-                    retry_count=3,
+                    timeout=30,
+                    max_retries=3,
                     retry_delay=0.1
                 )
                 
                 # 创建锁（模拟模式）
-                lock = create_lock("test_lock", config=lock_config, mock=True)
+                lock = create_lock("test_lock", config=lock_config)
                 
                 # 测试获取锁
                 acquired = await lock.acquire()
@@ -271,16 +271,13 @@ class TestFrameworkIntegration:
             # 测试3: 数据一致性
             print("  3. 测试数据一致性...")
             try:
-                from common.distributed.consistency import get_consistency_manager
-                
-                # 获取一致性管理器
-                consistency_manager = get_consistency_manager()
+                from common.distributed.consistency import put_data, get_data
                 
                 # 测试数据存储
-                await consistency_manager.put_data("test_key", {"test": "data"})
+                await put_data("test_key", {"test": "data"})
                 
                 # 测试数据读取
-                data = await consistency_manager.get_data("test_key")
+                data, version_info = await get_data("test_key")
                 assert data is not None, "数据一致性测试失败"
                 
                 print("    ✓ 数据一致性测试通过")
@@ -389,10 +386,12 @@ class TestFrameworkIntegration:
             # 测试3: 数据同步
             print("  3. 测试数据同步...")
             try:
-                from common.distributed.id_generator import SnowflakeIDGenerator
+                from common.distributed.id_generator import SnowflakeIDGenerator, SnowflakeConfig
                 
                 # 创建ID生成器
-                id_generator = SnowflakeIDGenerator(node_id=1)
+                config = SnowflakeConfig()
+                config.worker_id = 1
+                id_generator = SnowflakeIDGenerator(config)
                 
                 # 测试生成唯一ID
                 id1 = id_generator.generate_id()

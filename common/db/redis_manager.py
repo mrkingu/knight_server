@@ -409,7 +409,7 @@ class DistributedLock:
 class RedisManager(Singleton):
     """Redis管理器"""
     
-    def __init__(self):
+    def __init__(self, mock: bool = False):
         """初始化Redis管理器"""
         if hasattr(self, '_initialized'):
             return
@@ -417,9 +417,21 @@ class RedisManager(Singleton):
         self._pools: Dict[str, RedisConnectionPool] = {}
         self._bloom_filter: Optional[BloomFilter] = None
         self._cache_strategy = CacheStrategy()
+        self._mock = mock
         self._initialized = True
         
         logger.info("Redis管理器初始化完成")
+    
+    @classmethod
+    def create_instance(cls, mock: bool = False):
+        """创建新实例，避免单例模式问题"""
+        instance = cls.__new__(cls)
+        instance._pools = {}
+        instance._bloom_filter = None
+        instance._cache_strategy = CacheStrategy()
+        instance._mock = mock
+        instance._initialized = True
+        return instance
     
     async def initialize(self, config_data: Optional[Dict] = None):
         """
