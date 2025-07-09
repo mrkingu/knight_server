@@ -520,9 +520,20 @@ class GateServer(BaseServer):
 
 def main():
     """主函数"""
+    import argparse
+    
+    parser = argparse.ArgumentParser(description='Gate服务器')
+    parser.add_argument('--port', type=int, help='服务端口')
+    args = parser.parse_args()
+    
     try:
         # 创建网关服务器
         server = GateServer()
+        
+        # 如果指定了端口，则覆盖配置
+        if args.port:
+            server.gateway_config.websocket.port = args.port
+            logger.info(f"使用命令行指定的端口: {args.port}")
         
         # 运行服务器
         server.run()
