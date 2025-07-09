@@ -40,10 +40,11 @@ from .config import (
     BrokerType, ResultBackendType, SerializerType,
     get_default_celery_config
 )
-from .decorators import (
-    delay_task, periodic_task, retry_task, priority_task, async_task,
-    DelayTaskDecorator, PeriodicTaskDecorator, RetryTaskDecorator,
-    PriorityTaskDecorator, AsyncTaskDecorator
+from common.decorator.celery_decorator import (
+    delay_task, periodic_task, retry_task, priority_task, task_callback,
+    TaskPriority, TaskStatus, TaskInfo, TaskStatistics, TaskRegistry,
+    get_task_registry, get_task_info, get_task_statistics, 
+    list_running_tasks, list_periodic_tasks, cancel_task
 )
 from .task_manager import (
     TaskManager, TaskInfo, TaskStatistics, TaskType,
@@ -91,12 +92,18 @@ __all__ = [
     'periodic_task',
     'retry_task',
     'priority_task',
-    'async_task',
-    'DelayTaskDecorator',
-    'PeriodicTaskDecorator',
-    'RetryTaskDecorator',
-    'PriorityTaskDecorator',
-    'AsyncTaskDecorator',
+    'task_callback',
+    'TaskPriority',
+    'TaskStatus',
+    'TaskInfo',
+    'TaskStatistics',
+    'TaskRegistry',
+    'get_task_registry',
+    'get_task_info',
+    'get_task_statistics',
+    'list_running_tasks',
+    'list_periodic_tasks',
+    'cancel_task',
     
     # 任务管理
     'TaskManager',
