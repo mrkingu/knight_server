@@ -137,7 +137,7 @@ class MatchService(BaseService):
         self.match_rating_range = match_rating_range
         
         # 匹配队列 (优先级队列)
-        self.match_queues: Dict[MatchType, List[MatchRequest]] = {
+        self.match_queues: Dict[MatchType, List[Tuple[int, float, MatchRequest]]] = {
             match_type: [] for match_type in MatchType
         }
         
