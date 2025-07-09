@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 """
 服务器启动脚本
 直接运行此脚本启动所有服务
