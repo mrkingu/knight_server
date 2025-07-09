@@ -1,0 +1,118 @@
+# 服务启动器配置文件
+launcher:
+  name: "Knight Server Launcher"
+  version: "1.0.0"
+  log_level: "INFO"
+  max_workers: 10
+  health_check_interval: 30
+  process_monitor_interval: 5
+  pid_file_dir: "/tmp/knight_server"
+  log_file_dir: "./logs"
+  backup_count: 5
+
+# 启动配置
+startup:
+  sequence:
+    - "gate-8001"
+    - "logic-9001"
+    - "chat-9101"
+    - "fight-9201"
+  timeout: 60
+  retry_count: 3
+  parallel_start: false
+  wait_for_dependencies: true
+  dependency_timeout: 30
+
+# 服务配置
+services:
+  gate:
+    - name: "gate-8001"
+      service_type: "gate"
+      port: 8001
+      process_count: 1
+      auto_restart: true
+      dependencies: []
+      health_check:
+        type: "http"
+        endpoint: "/health"
+        interval: 10
+        timeout: 5
+        retries: 3
+        expected_status: 200
+      env_vars:
+        LOG_LEVEL: "INFO"
+      startup_timeout: 30
+      shutdown_timeout: 30
+      restart_delay: 5
+      max_restarts: 5
+      restart_window: 300
+      priority: 100
+      enabled: true
+
+  logic:
+    - name: "logic-9001"
+      service_type: "logic"
+      port: 9001
+      process_count: 2
+      auto_restart: true
+      dependencies: ["gate-8001"]
+      health_check:
+        type: "grpc"
+        method: "HealthCheck"
+        interval: 10
+        timeout: 5
+        retries: 3
+      env_vars:
+        LOG_LEVEL: "INFO"
+      startup_timeout: 30
+      shutdown_timeout: 30
+      restart_delay: 5
+      max_restarts: 5
+      restart_window: 300
+      priority: 90
+      enabled: true
+
+  chat:
+    - name: "chat-9101"
+      service_type: "chat"
+      port: 9101
+      process_count: 1
+      auto_restart: true
+      dependencies: ["logic-9001"]
+      health_check:
+        type: "tcp"
+        interval: 10
+        timeout: 5
+        retries: 3
+      env_vars:
+        LOG_LEVEL: "INFO"
+      startup_timeout: 30
+      shutdown_timeout: 30
+      restart_delay: 5
+      max_restarts: 5
+      restart_window: 300
+      priority: 80
+      enabled: true
+
+  fight:
+    - name: "fight-9201"
+      service_type: "fight"
+      port: 9201
+      process_count: 2
+      auto_restart: true
+      dependencies: ["logic-9001"]
+      health_check:
+        type: "grpc"
+        method: "HealthCheck"
+        interval: 10
+        timeout: 5
+        retries: 3
+      env_vars:
+        LOG_LEVEL: "INFO"
+      startup_timeout: 30
+      shutdown_timeout: 30
+      restart_delay: 5
+      max_restarts: 5
+      restart_window: 300
+      priority: 80
+      enabled: true
