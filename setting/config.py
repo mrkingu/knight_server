@@ -391,3 +391,35 @@ REGISTRY_CONFIG = {
         "deregister_critical_after": "30s"  # 严重故障后注销时间
     }
 }
+
+
+class Config(BaseConfig):
+    """
+    默认配置类
+    """
+    
+    def get_default_config(self) -> Dict[str, Any]:
+        """获取默认配置"""
+        return {
+            "debug": False,
+            "log_level": "INFO",
+            "host": "localhost",
+            "port": 8080,
+            "database": {
+                "redis": {
+                    "host": "localhost",
+                    "port": 6379,
+                    "db": 0
+                },
+                "mongodb": {
+                    "host": "localhost",
+                    "port": 27017,
+                    "database": "knight_game"
+                }
+            },
+            "registry": REGISTRY_CONFIG
+        }
+
+
+# 全局配置实例
+config = Config.get_instance()

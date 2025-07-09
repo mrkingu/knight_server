@@ -471,16 +471,27 @@ class MongoTransaction:
 class MongoManager(Singleton):
     """MongoDB管理器"""
     
-    def __init__(self):
+    def __init__(self, mock: bool = False):
         """初始化MongoDB管理器"""
         if hasattr(self, '_initialized'):
             return
         
         self._pool: Optional[MongoConnectionPool] = None
         self._collections_config: Dict[str, Dict] = {}
+        self._mock = mock
         self._initialized = True
         
         logger.info("MongoDB管理器初始化完成")
+    
+    @classmethod
+    def create_instance(cls, mock: bool = False):
+        """创建新实例，避免单例模式问题"""
+        instance = cls.__new__(cls)
+        instance._pool = None
+        instance._collections_config = {}
+        instance._mock = mock
+        instance._initialized = True
+        return instance
     
     async def initialize(self, config_data: Optional[Dict] = None):
         """
