@@ -59,10 +59,7 @@ logger = SimpleLogger("launcher")
 class LoggerFactory:
     """日志工厂类"""
     
-    @staticmethod
-    def initialize(service_type: str = "launcher", port: int = 0) -> None:
-        """初始化日志"""
-        pass
+# Removed the unused LoggerFactory.initialize method.
     
     @staticmethod
     def get_logger(name: str) -> SimpleLogger:
