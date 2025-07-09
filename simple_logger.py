@@ -1,78 +1,43 @@
 """
-简单日志实现
-
-为了测试服务启动器，提供一个简单的日志接口，
-不依赖外部库如loguru，仅使用Python标准库。
+Simple logger implementation for testing purposes
 """
-
 import logging
-import sys
-from typing import Any, Optional
-
+from datetime import datetime
+from typing import Any, Dict, Optional
 
 class SimpleLogger:
-    """简单日志器实现"""
-    
-    def __init__(self, name: str = "launcher"):
+    def __init__(self, name: str = "logger"):
         self.name = name
         self.logger = logging.getLogger(name)
+        self.logger.setLevel(logging.INFO)
         
-        # 设置默认配置
-        if not self.logger.handlers:
-            handler = logging.StreamHandler(sys.stdout)
-            formatter = logging.Formatter(
-                '%(asctime)s - %(name)s - %(levelname)s - %(message)s'
-            )
-            handler.setFormatter(formatter)
-            self.logger.addHandler(handler)
-            self.logger.setLevel(logging.INFO)
+        # Create console handler
+        handler = logging.StreamHandler()
+        formatter = logging.Formatter(
+            '%(asctime)s - %(name)s - %(levelname)s - %(message)s'
+        )
+        handler.setFormatter(formatter)
+        self.logger.addHandler(handler)
     
-    def debug(self, message: str, *args, **kwargs) -> None:
-        """记录DEBUG级别日志"""
-        self.logger.debug(message, *args, **kwargs)
+    def info(self, message: str, **kwargs):
+        extra_info = " ".join(f"{k}={v}" for k, v in kwargs.items())
+        full_message = f"{message} {extra_info}" if extra_info else message
+        self.logger.info(full_message)
     
-    def info(self, message: str, *args, **kwargs) -> None:
-        """记录INFO级别日志"""
-        self.logger.info(message, *args, **kwargs)
+    def error(self, message: str, **kwargs):
+        extra_info = " ".join(f"{k}={v}" for k, v in kwargs.items())
+        full_message = f"{message} {extra_info}" if extra_info else message
+        self.logger.error(full_message)
     
-    def warning(self, message: str, *args, **kwargs) -> None:
-        """记录WARNING级别日志"""
-        self.logger.warning(message, *args, **kwargs)
+    def warning(self, message: str, **kwargs):
+        extra_info = " ".join(f"{k}={v}" for k, v in kwargs.items())
+        full_message = f"{message} {extra_info}" if extra_info else message
+        self.logger.warning(full_message)
     
-    def error(self, message: str, *args, **kwargs) -> None:
-        """记录ERROR级别日志"""
-        self.logger.error(message, *args, **kwargs)
-    
-    def critical(self, message: str, *args, **kwargs) -> None:
-        """记录CRITICAL级别日志"""
-        self.logger.critical(message, *args, **kwargs)
-    
-    def exception(self, message: str, *args, **kwargs) -> None:
-        """记录异常信息"""
-        self.logger.exception(message, *args, **kwargs)
+    def debug(self, message: str, **kwargs):
+        extra_info = " ".join(f"{k}={v}" for k, v in kwargs.items())
+        full_message = f"{message} {extra_info}" if extra_info else message
+        self.logger.debug(full_message)
 
-
-# 创建全局日志实例
-logger = SimpleLogger("launcher")
-
-
-class LoggerFactory:
-    """日志工厂类"""
-    
-# Removed the unused LoggerFactory.initialize method.
-    
-    @staticmethod
-    def get_logger(name: str) -> SimpleLogger:
-        """获取日志器"""
-        return SimpleLogger(name)
-
-
-# 为兼容性导出
-def get_logger(name: str) -> SimpleLogger:
-    """获取日志器"""
-    return SimpleLogger(name)
-
-
-def initialize_logging(service_type: str = "launcher", port: int = 0) -> None:
-    """初始化日志"""
-    pass
+# Global logger instance
+logger = SimpleLogger()
