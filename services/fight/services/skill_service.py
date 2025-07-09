@@ -601,8 +601,10 @@ class SkillService(BaseService):
             
             # 检查魔法值（简化检查）
             if skill_def.mana_cost > 0:
-                # 这里应该检查实际的魔法值
-                pass
+                # 检查实际的魔法值
+                caster_mana = await self._get_caster_mana(skill_cast.caster_id)
+                if caster_mana < skill_def.mana_cost:
+                    return {'valid': False, 'error': '魔法值不足'}
             
             return {'valid': True}
             
