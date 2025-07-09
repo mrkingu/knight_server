@@ -528,11 +528,7 @@ class BaseServer:
             return
         
         try:
-            self._service_registry = ServiceRegistry(
-                host=self.config.registry_host,
-                port=self.config.registry_port
-            )
-            await self._service_registry.initialize()
+            self._service_registry = ServiceRegistry()
             self.logger.info("服务注册初始化完成")
         except Exception as e:
             self.logger.error("服务注册初始化失败", error=str(e))

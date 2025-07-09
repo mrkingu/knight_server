@@ -13,7 +13,16 @@ import random
 from typing import Optional, Dict, Any, Tuple
 from dataclasses import dataclass
 from datetime import datetime
-from loguru import logger
+try:
+    from loguru import logger
+except ImportError:
+    # 如果loguru不可用，使用简单的logger
+    import logging
+    logger = logging.getLogger(__name__)
+    logger.setLevel(logging.INFO)
+    handler = logging.StreamHandler()
+    handler.setFormatter(logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s'))
+    logger.addHandler(handler)
 
 
 @dataclass

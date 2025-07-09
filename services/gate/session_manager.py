@@ -21,7 +21,7 @@ from dataclasses import dataclass, field, asdict
 from enum import Enum
 
 from common.logger import logger
-from common.db.redis_manager import RedisManager, get_redis_manager
+from common.db.redis_manager import RedisManager, redis_manager
 from common.security import JWTAuth, TokenPayload, verify_token
 from common.utils.singleton import Singleton
 from .config import GatewayConfig
@@ -129,7 +129,7 @@ class SessionManager(Singleton):
     async def initialize(self):
         """初始化会话管理器"""
         # 初始化Redis管理器
-        self._redis_manager = get_redis_manager()
+        self._redis_manager = redis_manager
         if not self._redis_manager:
             from common.db.redis_manager import RedisManager
             self._redis_manager = RedisManager()
@@ -152,7 +152,7 @@ class SessionManager(Singleton):
             secret_key=self.config.auth.jwt_secret,
             algorithm=self.config.auth.jwt_algorithm,
             access_token_expire_minutes=self.config.auth.token_expire_time // 60,
-            refresh_token_expire_minutes=self.config.auth.refresh_token_expire_time // 60
+            refresh_token_expire_days=self.config.auth.refresh_token_expire_time // (60 * 24)
         )
         self._jwt_auth = JWTAuth(jwt_config)
         

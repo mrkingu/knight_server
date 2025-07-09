@@ -20,7 +20,7 @@ from dataclasses import dataclass, field
 from enum import Enum
 
 from common.logger import logger
-from common.db.redis_manager import get_redis_manager
+from common.db.redis_manager import redis_manager
 from ..config import GatewayConfig
 from ..websocket_manager import get_websocket_manager
 from ..session_manager import get_session_manager
@@ -145,7 +145,7 @@ class NotifyService:
         # 获取管理器实例
         self.websocket_manager = get_websocket_manager()
         self.session_manager = get_session_manager()
-        self.redis_manager = get_redis_manager()
+        self.redis_manager = redis_manager
         
         # 初始化通知模板
         await self._init_notification_templates()
