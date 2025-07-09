@@ -121,7 +121,7 @@ class RepositoryGenerator:
         methods = self._generate_repository_methods(doc_info, repo_name)
         
         # 组合完整代码
-        code_parts = [header, imports, repo_def, methods]
+        code_parts = [header, imports, repo_def] + methods
         return '\n\n'.join(code_parts)
     
     def _generate_repository_name(self, document_name: str) -> str:
