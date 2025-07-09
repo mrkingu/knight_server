@@ -51,7 +51,7 @@ def load_config():
     for bucket_id, bucket_info in bucket_list.items():
         buckets[bucket_info.get('prefix', f'bucket_{bucket_id}')] = {
             'db': bucket_info.get('db', 0),
-            'expire_time': 3600,  # Default expire time
+            'expire_time': bucket_info.get('expire_time', 3600),  # Use bucket-specific TTL if available
         }
     
     # Add some default buckets if none configured
