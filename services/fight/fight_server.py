@@ -522,9 +522,20 @@ async def start_fight_server(config: Optional[FightServerConfig] = None):
 # 主函数
 def main():
     """主函数"""
+    import argparse
+    
+    parser = argparse.ArgumentParser(description='Fight服务器')
+    parser.add_argument('--port', type=int, help='服务端口')
+    args = parser.parse_args()
+    
     try:
         # 创建配置
         config = FightServerConfig()
+        
+        # 如果指定了端口，则覆盖配置
+        if args.port:
+            config.port = args.port
+            logger.info(f"使用命令行指定的端口: {args.port}")
         
         # 启动服务器
         asyncio.run(start_fight_server(config))

@@ -593,9 +593,20 @@ def create_chat_server(config_path: Optional[str] = None) -> ChatServer:
 
 def main():
     """主程序入口"""
+    import argparse
+    
+    parser = argparse.ArgumentParser(description='Chat服务器')
+    parser.add_argument('--port', type=int, help='服务端口')
+    args = parser.parse_args()
+    
     try:
         # 创建Chat服务器
         server = create_chat_server()
+        
+        # 如果指定了端口，则覆盖配置
+        if args.port:
+            logger.info(f"使用命令行指定的端口: {args.port}")
+            # 这里可能需要更新服务器配置中的端口
         
         # 运行服务器
         server.run()

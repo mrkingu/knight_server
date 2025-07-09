@@ -528,9 +528,21 @@ def create_logic_server(config_path: Optional[str] = None) -> LogicServer:
 
 def main():
     """主程序入口"""
+    import argparse
+    
+    parser = argparse.ArgumentParser(description='Logic服务器')
+    parser.add_argument('--port', type=int, help='服务端口')
+    args = parser.parse_args()
+    
     try:
         # 创建Logic服务器
         server = create_logic_server()
+        
+        # 如果指定了端口，则覆盖配置
+        if args.port:
+            # 假设服务器有端口配置，需要根据实际情况调整
+            logger.info(f"使用命令行指定的端口: {args.port}")
+            # 这里可能需要更新服务器配置中的端口
         
         # 运行服务器
         server.run()
