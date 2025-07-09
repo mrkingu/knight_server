@@ -62,7 +62,7 @@ class TestFrameworkIntegration:
                 from common.db.mongo_manager import MongoManager
                 
                 # 创建管理器实例（使用模拟模式）
-                redis_manager = RedisManager(mock=True)
+                redis_manager = RedisManager.create_instance(mock=True)
                 mongo_manager = MongoManager(mock=True)
                 
                 # 测试初始化
