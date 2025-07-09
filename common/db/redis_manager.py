@@ -24,31 +24,47 @@ from concurrent.futures import ThreadPoolExecutor
 from common.logger import logger
 from common.utils.singleton import Singleton
 
-# Mock config loader for testing
+# Use unified config system
+from setting import config
+
 def load_config():
-    """Mock config loader"""
+    """Load Redis configuration from unified config"""
+    redis_config = config.get_database_config('redis')
+    
+    # Transform our config format to match what the Redis manager expects
+    base_config = {
+        'host': redis_config.get('host', 'localhost'),
+        'port': redis_config.get('port', 6379),
+        'db': redis_config.get('db', 0),
+        'password': redis_config.get('password'),
+        'max_connections': redis_config.get('max_connections', 100),
+        'socket_timeout': 5.0,
+        'socket_connect_timeout': 5.0,
+        'retry_on_timeout': True,
+    }
+    
+    # Build bucket configuration
+    buckets = {}
+    bucket_config = redis_config.get('bucket_config', {})
+    bucket_list = bucket_config.get('buckets', {})
+    
+    for bucket_id, bucket_info in bucket_list.items():
+        buckets[bucket_info.get('prefix', f'bucket_{bucket_id}')] = {
+            'db': bucket_info.get('db', 0),
+            'expire_time': 3600,  # Default expire time
+        }
+    
+    # Add some default buckets if none configured
+    if not buckets:
+        buckets = {
+            'user_data': {'db': 0, 'expire_time': 86400},
+            'game_data': {'db': 1, 'expire_time': 3600},
+        }
+    
     return {
         'redis': {
-            'default': {
-                'host': 'localhost',
-                'port': 6379,
-                'db': 0,
-                'password': None,
-                'max_connections': 100,
-                'socket_timeout': 5.0,
-                'socket_connect_timeout': 5.0,
-                'retry_on_timeout': True,
-            },
-            'buckets': {
-                'user_data': {
-                    'db': 0,
-                    'expire_time': 86400,
-                },
-                'game_data': {
-                    'db': 1,
-                    'expire_time': 3600,
-                },
-            }
+            'default': base_config,
+            'buckets': buckets,
         }
     }
 

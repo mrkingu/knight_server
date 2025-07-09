@@ -3,7 +3,7 @@
 启动Gate服务
 """
 import asyncio
-from server_launcher.launcher_new import ServerLauncher
+from server_launcher.launcher import ServerLauncher
 
 async def start_gate():
     launcher = ServerLauncher()
