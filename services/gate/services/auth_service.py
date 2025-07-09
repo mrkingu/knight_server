@@ -21,7 +21,7 @@ import json
 
 from common.logger import logger
 from common.security import JWTAuth, TokenConfig, generate_tokens, verify_token, refresh_token
-from common.db.redis_manager import get_redis_manager
+from common.db.redis_manager import redis_manager
 from ..config import GatewayConfig
 
 
@@ -56,12 +56,12 @@ class AuthService:
             secret_key=self.config.auth.jwt_secret,
             algorithm=self.config.auth.jwt_algorithm,
             access_token_expire_minutes=self.config.auth.token_expire_time // 60,
-            refresh_token_expire_minutes=self.config.auth.refresh_token_expire_time // 60
+            refresh_token_expire_days=self.config.auth.refresh_token_expire_time // (60 * 24)
         )
         self.jwt_auth = JWTAuth(token_config)
         
         # 初始化Redis管理器
-        self.redis_manager = get_redis_manager()
+        self.redis_manager = redis_manager
         
         # 初始化测试用户
         await self._init_test_users()

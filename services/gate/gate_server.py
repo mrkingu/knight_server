@@ -109,7 +109,11 @@ except ImportError:
     def uvloop_install():
         pass
         
-    uvloop.install = uvloop_install
+    class MockUvloop:
+        def __init__(self):
+            self.install = uvloop_install
+        
+    uvloop = MockUvloop()
 
 
 class GateServer(BaseServer):
@@ -137,11 +141,11 @@ class GateServer(BaseServer):
         self.route_manager: Optional[RouteManager] = None
         self.gate_handler: Optional[GateHandler] = None
         
-        # 控制器实例
-        self.controllers: Dict[str, Any] = {}
+        # 控制器实例通过父类的_controllers属性管理
+        # self.controllers: Dict[str, Any] = {}
         
-        # 服务实例
-        self.services: Dict[str, Any] = {}
+        # 服务实例通过父类的_services属性管理
+        # self.services: Dict[str, Any] = {}
         
         # 中间件实例
         self.middleware: Dict[str, Any] = {}
@@ -303,16 +307,20 @@ class GateServer(BaseServer):
     async def _initialize_services(self):
         """初始化服务"""
         # 路由服务
-        self.services['route_service'] = RouteService(self.gateway_config)
+        route_service = RouteService(self.gateway_config)
+        self.add_service('route_service', route_service)
         
         # 认证服务
-        self.services['auth_service'] = AuthService(self.gateway_config)
+        auth_service = AuthService(self.gateway_config)
+        self.add_service('auth_service', auth_service)
         
         # 通知服务
-        self.services['notify_service'] = NotifyService(self.gateway_config)
+        notify_service = NotifyService(self.gateway_config)
+        self.add_service('notify_service', notify_service)
         
         # 代理服务
-        self.services['proxy_service'] = ProxyService(self.gateway_config)
+        proxy_service = ProxyService(self.gateway_config)
+        self.add_service('proxy_service', proxy_service)
         
         # 初始化所有服务
         for service_name, service in self.services.items():
@@ -323,22 +331,25 @@ class GateServer(BaseServer):
     async def _initialize_controllers(self):
         """初始化控制器"""
         # 认证控制器
-        self.controllers['auth_controller'] = AuthController(
+        auth_controller = AuthController(
             self.gateway_config,
-            self.services['auth_service']
+            self.get_service('auth_service')
         )
+        self.add_controller('auth_controller', auth_controller)
         
         # 游戏控制器
-        self.controllers['game_controller'] = GameController(
+        game_controller = GameController(
             self.gateway_config,
-            self.services['proxy_service']
+            self.get_service('proxy_service')
         )
+        self.add_controller('game_controller', game_controller)
         
         # 聊天控制器
-        self.controllers['chat_controller'] = ChatController(
+        chat_controller = ChatController(
             self.gateway_config,
-            self.services['proxy_service']
+            self.get_service('proxy_service')
         )
+        self.add_controller('chat_controller', chat_controller)
         
         # 注册控制器到路由管理器
         for controller_name, controller in self.controllers.items():
@@ -362,7 +373,7 @@ class GateServer(BaseServer):
         
         # 注册中间件到路由管理器
         for middleware_name, middleware in self.middleware.items():
-            await self.route_manager.register_middleware(middleware_name, middleware.process)
+            await self.route_manager.register_middleware(middleware_name, middleware)
             
         logger.info("中间件初始化完成")
         

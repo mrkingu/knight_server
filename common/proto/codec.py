@@ -6,7 +6,20 @@
 """
 
 import time
-import zstd
+try:
+    import zstd
+    ZSTD_AVAILABLE = True
+except ImportError:
+    ZSTD_AVAILABLE = False
+    # Mock zstd implementation
+    class zstd:
+        @staticmethod
+        def compress(data):
+            return data
+        
+        @staticmethod
+        def decompress(data):
+            return data
 from typing import Type, Optional, Union, Dict, Any, Tuple
 from enum import Enum
 

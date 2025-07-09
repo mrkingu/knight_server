@@ -421,6 +421,14 @@ class RedisManager(Singleton):
         self._initialized = True
         
         logger.info("Redis管理器初始化完成")
+        
+    def _ensure_pools_initialized(self):
+        """确保_pools属性被初始化"""
+        if not hasattr(self, '_pools'):
+            self._pools: Dict[str, RedisConnectionPool] = {}
+            self._bloom_filter: Optional[BloomFilter] = None
+            self._cache_strategy = CacheStrategy()
+            self._mock = False
     
     @classmethod
     def create_instance(cls, mock: bool = False):
@@ -440,6 +448,8 @@ class RedisManager(Singleton):
         Args:
             config_data: 配置数据，如果为None则从配置文件加载
         """
+        self._ensure_pools_initialized()
+        
         if config_data is None:
             config = load_config()
             redis_config = config.get('redis', {})

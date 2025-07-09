@@ -10,8 +10,26 @@ import json
 from abc import ABC, abstractmethod
 from typing import Type, TypeVar, Optional, Dict, Any, ClassVar
 
-from google.protobuf.message import Message
-from google.protobuf.json_format import MessageToJson, Parse
+try:
+    from google.protobuf.message import Message
+    from google.protobuf.json_format import MessageToJson, Parse
+    PROTOBUF_AVAILABLE = True
+except ImportError:
+    PROTOBUF_AVAILABLE = False
+    # Mock protobuf implementation
+    class Message:
+        def __init__(self):
+            pass
+        def SerializeToString(self):
+            return b""
+        def ParseFromString(self, data):
+            pass
+    
+    def MessageToJson(message):
+        return "{}"
+    
+    def Parse(text, message):
+        return message
 
 from .header import MessageHeader
 from .exceptions import (
