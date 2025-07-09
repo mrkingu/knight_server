@@ -1,0 +1,58 @@
+/*
+ * 服务端消息定义
+ * 
+ * 自动生成时间: 2025-07-08 16:42:38
+ * 生成器: knight_server.proto.gen_utils.ProtoGenerator
+ * 
+ * 注意: 此文件为自动生成，请勿手动修改！
+ */
+
+syntax = "proto3";
+
+package server_messages;
+
+option java_package = "com.knight.server.proto.server_messages";
+option java_outer_classname = "Server_MessagesProto";
+option csharp_namespace = "KnightServer.Proto.Server_Messages";
+option go_package = "github.com/knight-server/proto/server_messages";
+
+// 请求消息定义
+
+// 登录请求
+// 基类: BaseRequest
+// 模块: proto.class_data.example_request
+message LoginRequest {
+    string username = 1;  // 字段: username
+    string password = 2;  // 字段: password
+    string platform = 3;  // 字段: platform
+}
+
+// 获取用户信息请求
+// 基类: BaseRequest
+// 模块: proto.class_data.example_request
+message GetUserInfoRequest {
+    int32 user_id = 1;  // 字段: user_id
+    bool include_detail = 2;  // 字段: include_detail
+}
+
+// 响应消息定义
+
+// 登录响应
+// 基类: BaseResponse
+// 模块: proto.class_data.example_response
+message LoginResponse {
+    string user_id = 1;  // 字段: user_id
+    string token = 2;  // 字段: token
+    string expires_at = 3;  // 字段: expires_at
+}
+
+// 获取用户信息响应
+// 基类: BaseResponse
+// 模块: proto.class_data.example_response
+message GetUserInfoResponse {
+    string user_id = 1;  // 字段: user_id
+    string username = 2;  // 字段: username
+    string email = 3;  // 字段: email
+    string profile = 4;  // 字段: profile
+    string permissions = 5;  // 字段: permissions
+}

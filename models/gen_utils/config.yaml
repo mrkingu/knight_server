@@ -1,0 +1,48 @@
+# 数据仓库生成工具配置文件
+
+# 扫描配置
+scan:
+  directories:
+    - "models/document"
+  file_patterns: ["*.py"]
+  
+# 输出配置
+output:
+  directory: "models/repository"
+  
+# Repository生成配置
+repository:
+  base_class: "BaseRepository"
+  preserve_custom_methods: true
+  add_batch_methods: true
+  add_query_methods: true
+  add_stats_methods: true
+  
+# 方法生成配置
+method_generation:
+  generate_field_queries: true
+  generate_batch_operations: true
+  generate_validation: true
+  generate_pagination: true
+  
+# 命名规则
+naming:
+  snake_case: true
+  repository_suffix: "Repository"
+  
+# 代码生成配置
+code_generation:
+  line_length: 88
+  add_type_hints: true
+  add_docstrings: true
+  add_imports: true
+  
+# 自定义方法配置
+custom_methods:
+  preserve_existing: true
+  backup_before_merge: true
+  
+# 日志配置
+logging:
+  level: "INFO"
+  verbose: false
