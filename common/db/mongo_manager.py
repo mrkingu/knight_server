@@ -22,22 +22,27 @@ from contextlib import asynccontextmanager
 from common.logger import logger
 from common.utils.singleton import Singleton
 
-# Mock config loader for testing
+# Use unified config system
+from setting import config
+
 def load_config():
-    """Mock config loader"""
+    """Load MongoDB configuration from unified config"""
+    mongodb_config = config.get_database_config('mongodb')
+    
+    # Transform our config format to match what the MongoDB manager expects
     return {
         'mongodb': {
-            'uri': 'mongodb://localhost:27017',
-            'database': 'game_dev',
+            'uri': mongodb_config.get('host', 'mongodb://localhost:27017'),
+            'database': mongodb_config.get('db', 'game_dev'),
             'username': '',
-            'password': '',
+            'password': mongodb_config.get('password', ''),
             'auth_source': 'admin',
-            'max_pool_size': 100,
-            'min_pool_size': 10,
+            'max_pool_size': mongodb_config.get('max_pool_size', 100),
+            'min_pool_size': mongodb_config.get('min_pool_size', 10),
             'max_idle_time_ms': 300000,
             'server_selection_timeout_ms': 30000,
-            'socket_timeout_ms': 30000,
-            'connect_timeout_ms': 10000,
+            'socket_timeout_ms': mongodb_config.get('socket_timeout', 30000),
+            'connect_timeout_ms': mongodb_config.get('connect_timeout', 10000),
             'heartbeat_frequency_ms': 10000,
             'retry_writes': True,
             'w': 'majority',
